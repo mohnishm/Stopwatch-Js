@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Stopwatch</title>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		
+		<style>
+			body {
+					background: url('http://www.highreshdwallpapers.com/wp-content/uploads/2012/05/Minimal-Clouds-Wallpaper.jpg');
+					background-size: 100%;
+			}
+			#box {
+					position: absolute;
+					margin: -220px 0 0 -165px;
+					top: 50%;
+					left: 50%;
+					height: 200px;
+					width: 300px;
+					border: solid 2px;
+					border-radius: 15px;
+					opacity: 0.5;
+					text-align: center;
+					font-family: Verdana, Arial, Sans-Serif;
+					padding-top: 55px;
+					-webkit-box-sizing: border-box;
+					-moz-box-sizing: border-box;
+					box-sizing: border-box;
+			}
+			
+			#Disp{
+					text-align: center;
+					font-family: Verdana, Arial, Sans-Serif;
+					font-size: 30px;
+					padding-top: 55px;
+			}
+			
+			#start {
+					position: absolute;
+					margin: -10px 0 0 -125px;
+					top: 50%;
+					left: 50%;
+					height: 60px;
+					width: 100px;
+					border-radius: 5px;
+					background-color: #69D2E7;
+					text-align: center;
+					color: #FFFFFF;
+					font-family: Verdana, Arial, Sans-Serif;
+					opacity: 0.5;
+			}
+			
+			#reset {
+					position: absolute;
+					margin: -10px 0 0 -15px;
+					top: 50%;
+					left: 50%;
+					height: 60px;
+					width: 100px;
+					border-radius: 5px;
+					background-color: #69D2E7;
+					text-align: center;
+					color: #FFFFFF;
+					font-family: Verdana, Arial, Sans-Serif;
+					opacity: 0.5;
+			}
+		</style>
+		
+		<script>
+			var hour =0;
+			var min =0;
+			var sec =0
+			var timerID = null; // Keeps track of the timer
+			var timerRunning = false; // is used to save the running state
+			
+			// function to stop
+			function stopclock(){ 
+			if(timerRunning){
+			clearTimeout(timerID);
+			timerRunning = false;}
+			}
+			
+			// the main function
+			function Run(){
+			if(sec>=59){
+			sec=0;
+			min+=1;
+			}
+			else{
+			sec+=1;
+			}
+			if(min>=59){
+			min=0;
+			hour+=1;
+			}
+			this.timeVal =zeroGen(hour,2)+":"+zeroGen(min,2)+":"+zeroGen(sec,2);
+			document.getElementById("Disp").innerHTML=timeVal;
+			timerID = setTimeout("Run()",1000);
+			timerRunning = true;
+			}
+			
+			// starts the timer
+			function startclock(){
+				if(timerRunning === true){
+				stopclock();
+				}
+				else{
+				Run();
+				}
+			}
+			
+			//resets the timer
+			function resetclock(){
+			hour=0;
+			min=0;
+			sec=0;
+			timerRunning = false;
+			timeVal=zeroGen(0,2)+":"+zeroGen(0,2)+":"+zeroGen(1,2);
+			document.getElementById("Disp").innerHTML=timeVal; 
+			}
+			
+			// generates numbers for the timer
+			function zeroGen(num,count){
+			var numGen = num + '';
+			while(numGen.length < count) {
+			numGen = "0" + numGen;
+			}
+			return numGen;
+			}
+			
+			// effects and animations
+			$(document).ready(function(){
+			$('#start').mouseenter(function(){
+			$('#start').fadeTo('fast', 1);   
+			});
+			$('#start').mouseleave(function(){
+			$('#start').fadeTo('fast', 0.5);   
+			});
+			$('#reset').mouseenter(function(){
+			$('#reset').fadeTo('fast', 1);   
+			});
+			$('#reset').mouseleave(function(){
+			$('#reset').fadeTo('fast', 0.5);   
+			});
+			});
+		</script>
+	</head>
+ 
+	<body>
+		<div id="box"><br/><span id="Disp">Click Start!</span></div>
+		<div id="start" onclick="startclock();"><br/><strong>Start/Stop</strong></div>
+		<div id="reset" onclick="resetclock();"><br/><strong>Reset</strong></div>
+	</body>
+</html>
